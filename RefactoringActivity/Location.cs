@@ -2,18 +2,38 @@
 
 public class Location
 {
-    public string Name;
-    public string Description;
-    public Dictionary<string, string> Exits;
-    public List<string> Items;
-    public List<Puzzle> Puzzles;
+    private string _name;
+    private string _description;
+    private Dictionary<string, string> _exits;
+    private List<string> _items;
+    private List<Puzzle> _puzzles;
     
     public Location(string name, string description)
     {
-        Name = name;
-        Description = description;
-        Exits = new Dictionary<string, string>();
-        Items = new List<string>();
-        Puzzles = new List<Puzzle>();
+        _name = name;
+        _description = description;
+        _exits = new Dictionary<string, string>();
+        _items = new List<string>();
+        _puzzles = new List<Puzzle>();
+    }
+    
+    public string GetDescription()
+    {
+        return _description;
+    }
+    
+    public Dictionary<string, string> GetExits()
+    {
+        return _exits;
+    }
+    
+    public List<string> GetItems()
+    {
+        return _items;
+    }
+    
+    public List<Puzzle> GetPuzzles()
+    {
+        return _puzzles;
     }
 }

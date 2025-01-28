@@ -2,7 +2,7 @@
 
 public class World
 {
-    public Dictionary<string, Location> Locations;
+    private Dictionary<string, Location> Locations;
 
     public World()
     {
@@ -16,17 +16,17 @@ public class World
         Location forest = new("Forest", "You are in a dense, dark forest.");
         Location cave = new("Cave", "You see a dark, ominous cave.");
 
-        start.Exits.Add("north", "Forest");
-        forest.Exits.Add("south", "Start");
-        forest.Exits.Add("east", "Cave");
-        cave.Exits.Add("west", "Forest");
+        start.GetExits().Add("north", "Forest");
+        forest.GetExits().Add("south", "Start");
+        forest.GetExits().Add("east", "Cave");
+        cave.GetExits().Add("west", "Forest");
 
-        start.Items.Add("map");
-        forest.Items.Add("key");
-        forest.Items.Add("potion");
-        cave.Items.Add("sword");
+        start.GetItems().Add("map");
+        forest.GetItems().Add("key");
+        forest.GetItems().Add("potion");
+        cave.GetItems().Add("sword");
 
-        start.Puzzles.Add(new Puzzle("riddle",
+        start.GetPuzzles().Add(new Puzzle("riddle",
             "What's tall as a house, round as a cup, and all the king's horses can't draw it up?", "well"));
 
         Locations.Add("Start", start);
@@ -36,9 +36,9 @@ public class World
 
     public bool MovePlayer(Player player, string direction)
     {
-        if (Locations[player.CurrentLocation].Exits.ContainsKey(direction))
+        if (Locations[player.CurrentLocation].GetExits().ContainsKey(direction))
         {
-            player.CurrentLocation = Locations[player.CurrentLocation].Exits[direction];
+            player.CurrentLocation = Locations[player.CurrentLocation].GetExits()[direction];
             return true;
         }
 
@@ -48,7 +48,7 @@ public class World
     public string GetLocationDescription(string locationName)
     {
         if (Locations.ContainsKey(locationName)) 
-            return Locations[locationName].Description;
+            return Locations[locationName].GetDescription();
         return "Unknown location.";
     }
 
@@ -58,27 +58,27 @@ public class World
             return "Unknown location.";
 
         Location location = Locations[locationName];
-        string details = location.Description;
+        string details = location.GetDescription();
         
-        if (location.Exits.Count > 0)
+        if (location.GetExits().Count > 0)
         {
             details += " Exits lead: ";
-            foreach (string exit in location.Exits.Keys)
+            foreach (string exit in location.GetExits().Keys)
                 details += exit + ", ";
             details = details.Substring(0, details.Length - 2);
         }
 
-        if (location.Items.Count > 0)
+        if (location.GetItems().Count > 0)
         {
             details += "\nYou see the following items:";
-            foreach (string item in location.Items) 
+            foreach (string item in location.GetItems()) 
                 details += $"\n- {item}";
         }
 
-        if (location.Puzzles.Count > 0)
+        if (location.GetPuzzles().Count > 0)
         {
             details += "\nYou see the following puzzles:";
-            foreach (Puzzle puzzle in location.Puzzles) 
+            foreach (Puzzle puzzle in location.GetPuzzles()) 
                 details += $"\n- {puzzle.Name}";
         }
 
@@ -88,9 +88,9 @@ public class World
     public bool TakeItem(Player player, string itemName)
     {
         Location location = Locations[player.CurrentLocation];
-        if (location.Items.Contains(itemName))
+        if (location.GetItems().Contains(itemName))
         {
-            location.Items.Remove(itemName);
+            location.GetItems().Remove(itemName);
             player.Inventory.Add(itemName);
             Console.WriteLine($"You take the {itemName}.");
             return true;
@@ -123,11 +123,11 @@ public class World
     public bool SolvePuzzle(Player player, string puzzleName)
     {
         Location location = Locations[player.CurrentLocation];
-        Puzzle? puzzle = location.Puzzles.Find(p => p.Name == puzzleName);
+        Puzzle? puzzle = location.GetPuzzles().Find(p => p.Name == puzzleName);
 
         if (puzzle != null && puzzle.Solve())
         {
-            location.Puzzles.Remove(puzzle);
+            location.GetPuzzles().Remove(puzzle);
             return true;
         }
 
