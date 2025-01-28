@@ -3,21 +3,21 @@
 public class Puzzle
 {
     public string Name;
-    public string Question;
-    public string Answer;
+    private string _question;
+    private string _answer;
     
     public Puzzle(string name, string question, string answer)
     {
         Name = name;
-        Question = question;
-        Answer = answer;
+        _question = question;
+        _answer = answer;
     }
 
     public bool Solve()
     {
-        Console.WriteLine($"Puzzle: {Question}");
+        Console.WriteLine($"Puzzle: {_question}");
         Console.Write("Your answer: ");
         string playerAnswer = Console.ReadLine()?.ToLower();
-        return playerAnswer == Answer.ToLower();
+        return playerAnswer == _answer.ToLower();
     }
 }
