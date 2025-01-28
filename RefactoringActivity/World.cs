@@ -16,22 +16,37 @@ public class World
         Location forest = new("Forest", "You are in a dense, dark forest.");
         Location cave = new("Cave", "You see a dark, ominous cave.");
 
-        start.GetExits().Add("north", "Forest");
-        forest.GetExits().Add("south", "Start");
-        forest.GetExits().Add("east", "Cave");
-        cave.GetExits().Add("west", "Forest");
+        InitializeExits(start, forest, cave);
 
-        start.GetItems().Add("map");
-        forest.GetItems().Add("key");
-        forest.GetItems().Add("potion");
-        cave.GetItems().Add("sword");
+        InitializeItems(start, forest, cave);
 
         start.GetPuzzles().Add(new Puzzle("riddle",
             "What's tall as a house, round as a cup, and all the king's horses can't draw it up?", "well"));
 
+        InitializeLocations(start, forest, cave);
+    }
+
+    private void InitializeLocations(Location start, Location forest, Location cave)
+    {
         Locations.Add("Start", start);
         Locations.Add("Forest", forest);
         Locations.Add("Cave", cave);
+    }
+
+    private static void InitializeItems(Location start, Location forest, Location cave)
+    {
+        start.GetItems().Add("map");
+        forest.GetItems().Add("key");
+        forest.GetItems().Add("potion");
+        cave.GetItems().Add("sword");
+    }
+
+    private static void InitializeExits(Location start, Location forest, Location cave)
+    {
+        start.GetExits().Add("north", "Forest");
+        forest.GetExits().Add("south", "Start");
+        forest.GetExits().Add("east", "Cave");
+        cave.GetExits().Add("west", "Forest");
     }
 
     public bool MovePlayer(Player player, string direction)
