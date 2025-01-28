@@ -2,18 +2,15 @@
 
 public class GameManager
 {
-    public bool IsRunning;
-    public Player Player;
-    public World World;
+    private bool IsRunning;
+    private Player Player;
+    private World World;
 
     public void RunGame()
     {
-        IsRunning = true;
-        Player = new Player(100);
-        World = new World();
+        InitializeGame();
 
-        Console.WriteLine("Welcome to the Text Adventure Game!");
-        Console.WriteLine("Type 'help' for a list of commands.");
+        PrintWelcomeMessage();
 
         while (IsRunning)
         {
@@ -26,13 +23,7 @@ public class GameManager
 
             if (input == "help")
             {
-                Console.WriteLine("Available commands:");
-                Console.WriteLine("- go [direction]: Move in a direction (north, south, east, west).");
-                Console.WriteLine("- take [item]: Take an item from your current location.");
-                Console.WriteLine("- use [item]: Use an item in your inventory.");
-                Console.WriteLine("- solve [puzzle]: Solve a puzzle in your current location.");
-                Console.WriteLine("- inventory: View the items in your inventory.");
-                Console.WriteLine("- quit: Exit the game.");
+                PrintCommands();
             }
             else if (input.StartsWith("go"))
             {
@@ -112,13 +103,42 @@ public class GameManager
             }
             else if (input == "quit")
             {
-                IsRunning = false;
-                Console.WriteLine("Thanks for playing!");
+                QuitGame();
             }
             else
             {
                 Console.WriteLine("Unknown command. Try 'help'.");
             }
         }
+    }
+
+    private void QuitGame()
+    {
+        IsRunning = false;
+        Console.WriteLine("Thanks for playing!");
+    }
+
+    private static void PrintCommands()
+    {
+        Console.WriteLine("Available commands:");
+        Console.WriteLine("- go [direction]: Move in a direction (north, south, east, west).");
+        Console.WriteLine("- take [item]: Take an item from your current location.");
+        Console.WriteLine("- use [item]: Use an item in your inventory.");
+        Console.WriteLine("- solve [puzzle]: Solve a puzzle in your current location.");
+        Console.WriteLine("- inventory: View the items in your inventory.");
+        Console.WriteLine("- quit: Exit the game.");
+    }
+
+    private void InitializeGame()
+    {
+        IsRunning = true;
+        Player = new Player(100);
+        World = new World();
+    }
+
+    private static void PrintWelcomeMessage()
+    {
+        Console.WriteLine("Welcome to the Text Adventure Game!");
+        Console.WriteLine("Type 'help' for a list of commands.");
     }
 }
