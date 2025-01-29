@@ -3,6 +3,10 @@
 public class World
 {
     private Dictionary<string, Location> Locations;
+    
+    private Location start;
+    private Location forest;
+    private Location cave;
 
     public World()
     {
@@ -12,21 +16,26 @@ public class World
 
     private void InitializeWorld()
     {
-        Location start = new("Start", "You are at the starting point of your adventure.");
-        Location forest = new("Forest", "You are in a dense, dark forest.");
-        Location cave = new("Cave", "You see a dark, ominous cave.");
+        InitializeLocations();
 
         InitializeExits(start, forest, cave);
 
         InitializeItems(start, forest, cave);
+        
+        PopulateLocationDictionary(start, forest, cave);
 
         start.GetPuzzles().Add(new Puzzle("riddle",
             "What's tall as a house, round as a cup, and all the king's horses can't draw it up?", "well"));
-
-        InitializeLocations(start, forest, cave);
     }
 
-    private void InitializeLocations(Location start, Location forest, Location cave)
+    private void InitializeLocations()
+    {
+        start = new Location("Start", "You are at the starting point of your adventure.");
+        forest = new Location("Forest", "You are in a dense, dark forest.");
+        cave = new Location("Cave", "You see a dark, ominous cave.");
+    }
+
+    private void PopulateLocationDictionary(Location start, Location forest, Location cave)
     {
         Locations.Add("Start", start);
         Locations.Add("Forest", forest);
