@@ -94,7 +94,7 @@ public class World
         {
             details += "\nYou see the following puzzles:";
             foreach (Puzzle puzzle in location.GetPuzzles()) 
-                details += $"\n- {puzzle.Name}";
+                details += $"\n- {puzzle.GetName()}";
         }
 
         return details;
@@ -138,7 +138,7 @@ public class World
     public bool SolvePuzzle(Player player, string puzzleName)
     {
         Location location = Locations[player.CurrentLocation];
-        Puzzle? puzzle = location.GetPuzzles().Find(p => p.Name == puzzleName);
+        Puzzle? puzzle = location.GetPuzzles().Find(p => p.GetName() == puzzleName);
 
         if (puzzle != null && puzzle.Solve())
         {

@@ -2,13 +2,13 @@
 
 public class Puzzle
 {
-    public string Name;
+    private string _name;
     private string _question;
     private string _answer;
     
     public Puzzle(string name, string question, string answer)
     {
-        Name = name;
+        _name = name;
         _question = question;
         _answer = answer;
     }
@@ -19,5 +19,10 @@ public class Puzzle
         Console.Write("Your answer: ");
         string playerAnswer = Console.ReadLine()?.ToLower();
         return playerAnswer == _answer.ToLower();
+    }
+    
+    public string GetName()
+    {
+        return _name;
     }
 }
