@@ -51,9 +51,9 @@ public class World
 
     public bool MovePlayer(Player player, string direction)
     {
-        if (Locations[player.CurrentLocation].GetExits().ContainsKey(direction))
+        if (Locations[player.GetCurrentLocation()].GetExits().ContainsKey(direction))
         {
-            player.CurrentLocation = Locations[player.CurrentLocation].GetExits()[direction];
+            player.SetCurrentLocation(Locations[player.GetCurrentLocation()].GetExits()[direction]);
             return true;
         }
 
@@ -102,11 +102,11 @@ public class World
 
     public bool TakeItem(Player player, string itemName)
     {
-        Location location = Locations[player.CurrentLocation];
+        Location location = Locations[player.GetCurrentLocation()];
         if (location.GetItems().Contains(itemName))
         {
             location.GetItems().Remove(itemName);
-            player.Inventory.Add(itemName);
+            player.AddInventoryItem(itemName);
             Console.WriteLine($"You take the {itemName}.");
             return true;
         }
@@ -116,19 +116,19 @@ public class World
 
     public bool UseItem(Player player, string itemName)
     {
-        if (player.Inventory.Contains(itemName))
+        if (player.HasItem(itemName))
         {
             if (itemName == "potion")
             {
                 Console.WriteLine("Ouch! That tasted like poison!");
-                player.Health -= 10;
-                Console.WriteLine($"Your health is now {player.Health}.");
+                player.SetHealth(player.GetHealth() - 10);
+                Console.WriteLine($"Your health is now {player.GetHealth()}.");
             }
             else
             {
                 Console.WriteLine($"The {itemName} disappears in a puff of smoke!");
             }
-            player.Inventory.Remove(itemName);
+            player.RemoveInventoryItem(itemName);
             return true;
         }
 
@@ -137,7 +137,7 @@ public class World
 
     public bool SolvePuzzle(Player player, string puzzleName)
     {
-        Location location = Locations[player.CurrentLocation];
+        Location location = Locations[player.GetCurrentLocation()];
         Puzzle? puzzle = location.GetPuzzles().Find(p => p.Name == puzzleName);
 
         if (puzzle != null && puzzle.Solve())

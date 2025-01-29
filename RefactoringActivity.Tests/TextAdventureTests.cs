@@ -12,9 +12,9 @@ public class TextAdventureTests
         var player = new Player(100);
 
         // Act & Assert
-        Assert.Equal(100, player.Health);
-        Assert.Equal("Start", player.CurrentLocation);
-        Assert.Empty(player.Inventory);
+        Assert.Equal(100, player.GetHealth());
+        Assert.Equal("Start", player.GetCurrentLocation());
+        Assert.Empty(player.GetInventory());
     }
 
     [Fact]
@@ -24,11 +24,11 @@ public class TextAdventureTests
         var player = new Player(100);
 
         // Act
-        player.Inventory.Add("key");
+        player.AddInventoryItem("key");
 
         // Assert
-        Assert.Contains("key", player.Inventory);
-        Assert.True(player.Inventory.Contains("key"));
+        Assert.Contains("key", player.GetInventory());
+        Assert.True(player.HasItem("key"));
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class TextAdventureTests
 
         // Assert
         Assert.True(moved);
-        Assert.Equal("Forest", player.CurrentLocation);
+        Assert.Equal("Forest", player.GetCurrentLocation());
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class TextAdventureTests
 
         // Assert
         Assert.False(moved);
-        Assert.Equal("Start", player.CurrentLocation);
+        Assert.Equal("Start", player.GetCurrentLocation());
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class TextAdventureTests
 
         // Assert
         Assert.True(taken);
-        Assert.Contains("map", player.Inventory);
+        Assert.Contains("map", player.GetInventory());
     }
 
     [Fact]
