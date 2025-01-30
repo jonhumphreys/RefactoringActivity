@@ -63,17 +63,6 @@ public class World
         cave.AddExit("west", "Forest");
     }
 
-    public bool MovePlayer(Player player, string direction)
-    {
-        if (Locations[player.GetCurrentLocation()].GetExits().ContainsKey(direction))
-        {
-            player.SetCurrentLocation(Locations[player.GetCurrentLocation()].GetExits()[direction]);
-            return true;
-        }
-
-        return false;
-    }
-
     public string GetLocationDescription(string locationName)
     {
         if (Locations.ContainsKey(locationName)) 
@@ -89,42 +78,53 @@ public class World
         Location location = Locations[locationName];
         string details = location.GetDescription();
         
+        details = CompileLocationDetails(location, details);
+
+        return details;
+    }
+
+    private static string CompileLocationDetails(Location location, string details)
+    {
         if (location.GetExits().Count > 0)
         {
-            details += " Exits lead: ";
-            foreach (string exit in location.GetExits().Keys)
-                details += exit + ", ";
-            details = details.Substring(0, details.Length - 2);
+            details = GetLocationExitDetails(details, location);
         }
 
         if (location.GetItems().Count > 0)
         {
-            details += "\nYou see the following items:";
-            foreach (string item in location.GetItems()) 
-                details += $"\n- {item}";
+            details = GetLocationItemDetails(details, location);
         }
 
         if (location.GetPuzzles().Count > 0)
         {
-            details += "\nYou see the following puzzles:";
-            foreach (Puzzle puzzle in location.GetPuzzles()) 
-                details += $"\n- {puzzle.Name}";
+            details = GetLocationPuzzleDetails(details, location);
         }
 
         return details;
     }
 
-    public bool SolvePuzzle(Player player, string puzzleName)
+    private static string GetLocationPuzzleDetails(string details, Location location)
     {
-        Location location = Locations[player.GetCurrentLocation()];
-        Puzzle? puzzle = location.GetPuzzles().Find(p => p.Name == puzzleName);
+        details += "\nYou see the following puzzles:";
+        foreach (Puzzle puzzle in location.GetPuzzles()) 
+            details += $"\n- {puzzle.Name}";
+        return details;
+    }
 
-        if (puzzle != null && puzzle.Solve())
-        {
-            location.GetPuzzles().Remove(puzzle);
-            return true;
-        }
+    private static string GetLocationItemDetails(string details, Location location)
+    {
+        details += "\nYou see the following items:";
+        foreach (string item in location.GetItems()) 
+            details += $"\n- {item}";
+        return details;
+    }
 
-        return false;
+    private static string GetLocationExitDetails(string details, Location location)
+    {
+        details += " Exits lead: ";
+        foreach (string exit in location.GetExits().Keys)
+            details += exit + ", ";
+        details = details.Substring(0, details.Length - 2);
+        return details;
     }
 }

@@ -20,4 +20,5 @@ public class Puzzle
         string playerAnswer = Console.ReadLine()?.ToLower();
         return playerAnswer == _answer.ToLower();
     }
+    
 }

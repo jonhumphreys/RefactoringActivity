@@ -31,7 +31,7 @@ public class Player
     
     public bool UseItem(string itemName)
     {
-        if (Inventory.Contains(itemName))
+        if (_inventory.Contains(itemName))
         {
             if (itemName == "potion")
             {
@@ -41,7 +41,7 @@ public class Player
             {
                 Console.WriteLine($"The {itemName} disappears in a puff of smoke!");
             }
-            Inventory.Remove(itemName);
+            _inventory.Remove(itemName);
             return true;
         }
 
@@ -53,7 +53,7 @@ public class Player
         if (location.GetItems().Contains(itemName))
         {
             location.GetItems().Remove(itemName);
-            Inventory.Add(itemName);
+            _inventory.Add(itemName);
             Console.WriteLine($"You take the {itemName}.");
             return true;
         }
@@ -63,8 +63,33 @@ public class Player
     private void UsePotion()
     {
         Console.WriteLine("Ouch! That tasted like poison!");
-        Health -= 10;
-        Console.WriteLine($"Your health is now {Health}.");
+        _health -= 10;
+        Console.WriteLine($"Your health is now {_health}.");
+    }
+    
+    public bool MovePlayer(Player player, string direction, World world)
+    {
+        if (world.Locations[GetCurrentLocation()].GetExits().ContainsKey(direction))
+        {
+            SetCurrentLocation(world.Locations[player.GetCurrentLocation()].GetExits()[direction]);
+            return true;
+        }
+
+        return false;
+    }
+    
+    public bool SolvePuzzle(string puzzleName, World world)
+    {
+        Location location = world.Locations[GetCurrentLocation()];
+        Puzzle? puzzle = location.GetPuzzles().Find(p => p.Name == puzzleName);
+
+        if (puzzle != null && puzzle.Solve())
+        {
+            location.GetPuzzles().Remove(puzzle);
+            return true;
+        }
+
+        return false;
     }
 
     public int GetHealth()

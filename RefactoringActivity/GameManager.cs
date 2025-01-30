@@ -31,7 +31,7 @@ public class GameManager
                 if (parts.Length > 1)
                 {
                     string direction = parts[1];
-                    if (World.MovePlayer(Player, direction))
+                    if (Player.MovePlayer(Player, direction, World))
                     {
                         Console.WriteLine($"You move {direction}.");
                     }
@@ -51,7 +51,7 @@ public class GameManager
                 if (parts.Length > 1)
                 {
                     string itemName = parts[1];
-                    if (!Player.TakeItem(itemName, World.Locations[Player.CurrentLocation]))
+                    if (!Player.TakeItem(itemName, World.Locations[Player.GetCurrentLocation()]))
                     {
                         Console.WriteLine($"There is no {itemName} here.");
                     }
@@ -87,7 +87,7 @@ public class GameManager
                 if (parts.Length > 1)
                 {
                     string puzzleName = parts[1];
-                    if (World.SolvePuzzle(Player, puzzleName))
+                    if (Player.SolvePuzzle(puzzleName, World))
                     {
                         Console.WriteLine($"You solved the {puzzleName} puzzle!");
                     }

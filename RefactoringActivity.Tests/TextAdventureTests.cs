@@ -54,7 +54,7 @@ public class TextAdventureTests
         var player = new Player(100);
 
         // Act
-        bool moved = world.MovePlayer(player, "north");
+        bool moved = player.MovePlayer(player, "north", world);
 
         // Assert
         Assert.True(moved);
@@ -69,7 +69,7 @@ public class TextAdventureTests
         var player = new Player(100);
 
         // Act
-        bool moved = world.MovePlayer(player, "west");
+        bool moved = player.MovePlayer(player, "west", world);
 
         // Assert
         Assert.False(moved);
