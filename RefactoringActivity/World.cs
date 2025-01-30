@@ -2,7 +2,11 @@
 
 public class World
 {
-    private Dictionary<string, Location> Locations;
+    public Dictionary<string, Location> Locations;
+    
+    private Location start;
+    private Location forest;
+    private Location cave;
 
     public World()
     {
@@ -10,43 +14,53 @@ public class World
         InitializeWorld();
     }
 
-    private void InitializeWorld()
+    public Dictionary<string, Location> GetLocations()
     {
-        Location start = new("Start", "You are at the starting point of your adventure.");
-        Location forest = new("Forest", "You are in a dense, dark forest.");
-        Location cave = new("Cave", "You see a dark, ominous cave.");
-
-        InitializeExits(start, forest, cave);
-
-        InitializeItems(start, forest, cave);
-
-        start.GetPuzzles().Add(new Puzzle("riddle",
-            "What's tall as a house, round as a cup, and all the king's horses can't draw it up?", "well"));
-
-        InitializeLocations(start, forest, cave);
+        return Locations;
     }
 
-    private void InitializeLocations(Location start, Location forest, Location cave)
+    private void InitializeWorld()
+    {
+        InitializeLocations();
+        InitializeExits();
+        InitializeItems();
+        InitializePuzzles();
+        PopulateDictionaryWithLocations();
+    }
+
+    private void InitializePuzzles()
+    {
+        start.AddPuzzle("riddle", "What's tall as a house, round as a cup, and all the king's horses can't draw it up?", "well");
+    }
+    
+    private void InitializeLocations()
+    {
+        start = new Location("Start", "You are at the starting point of your adventure.");
+        forest = new Location("Forest", "You are in a dense, dark forest.");
+        cave = new Location("Cave", "You see a dark, ominous cave.");
+    }
+
+    private void PopulateDictionaryWithLocations()
     {
         Locations.Add("Start", start);
         Locations.Add("Forest", forest);
         Locations.Add("Cave", cave);
     }
 
-    private static void InitializeItems(Location start, Location forest, Location cave)
+    private void InitializeItems()
     {
-        start.GetItems().Add("map");
-        forest.GetItems().Add("key");
-        forest.GetItems().Add("potion");
-        cave.GetItems().Add("sword");
+        start.AddItem("map");
+        forest.AddItem("key");
+        forest.AddItem("potion");
+        cave.AddItem("sword");
     }
 
-    private static void InitializeExits(Location start, Location forest, Location cave)
+    private void InitializeExits()
     {
-        start.GetExits().Add("north", "Forest");
-        forest.GetExits().Add("south", "Start");
-        forest.GetExits().Add("east", "Cave");
-        cave.GetExits().Add("west", "Forest");
+        start.AddExit("north", "Forest");
+        forest.AddExit("south", "Start");
+        forest.AddExit("east", "Cave");
+        cave.AddExit("west", "Forest");
     }
 
     public bool MovePlayer(Player player, string direction)
@@ -98,41 +112,6 @@ public class World
         }
 
         return details;
-    }
-
-    public bool TakeItem(Player player, string itemName)
-    {
-        Location location = Locations[player.GetCurrentLocation()];
-        if (location.GetItems().Contains(itemName))
-        {
-            location.GetItems().Remove(itemName);
-            player.AddInventoryItem(itemName);
-            Console.WriteLine($"You take the {itemName}.");
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool UseItem(Player player, string itemName)
-    {
-        if (player.HasItem(itemName))
-        {
-            if (itemName == "potion")
-            {
-                Console.WriteLine("Ouch! That tasted like poison!");
-                player.SetHealth(player.GetHealth() - 10);
-                Console.WriteLine($"Your health is now {player.GetHealth()}.");
-            }
-            else
-            {
-                Console.WriteLine($"The {itemName} disappears in a puff of smoke!");
-            }
-            player.RemoveInventoryItem(itemName);
-            return true;
-        }
-
-        return false;
     }
 
     public bool SolvePuzzle(Player player, string puzzleName)
