@@ -15,7 +15,7 @@ public class GameManager
         while (IsRunning)
         {
             Console.WriteLine();
-            Console.WriteLine(World.GetLocationDetails(Player.CurrentLocation));
+            Console.WriteLine(World.GetLocationDetails(Player.GetCurrentLocation()));
             Console.Write("> ");
             string input = Console.ReadLine()?.ToLower();
             if (string.IsNullOrEmpty(input)) 

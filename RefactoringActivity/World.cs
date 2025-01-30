@@ -65,9 +65,9 @@ public class World
 
     public bool MovePlayer(Player player, string direction)
     {
-        if (Locations[player.CurrentLocation].GetExits().ContainsKey(direction))
+        if (Locations[player.GetCurrentLocation()].GetExits().ContainsKey(direction))
         {
-            player.CurrentLocation = Locations[player.CurrentLocation].GetExits()[direction];
+            player.SetCurrentLocation(Locations[player.GetCurrentLocation()].GetExits()[direction]);
             return true;
         }
 
@@ -116,7 +116,7 @@ public class World
 
     public bool SolvePuzzle(Player player, string puzzleName)
     {
-        Location location = Locations[player.CurrentLocation];
+        Location location = Locations[player.GetCurrentLocation()];
         Puzzle? puzzle = location.GetPuzzles().Find(p => p.Name == puzzleName);
 
         if (puzzle != null && puzzle.Solve())
