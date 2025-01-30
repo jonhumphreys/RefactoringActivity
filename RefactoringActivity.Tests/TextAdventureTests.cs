@@ -80,11 +80,11 @@ public class TextAdventureTests
     public void World_CanTakeItemFromLocation()
     {
         // Arrange
-        var world = new World();
         var player = new Player(100);
+        var location = new Location("Start", "You are at the starting point of your adventure.");
 
         // Act
-        bool taken = world.TakeItem(player, "map");
+        bool taken = player.TakeItem("map", location);
 
         // Assert
         Assert.True(taken);
@@ -95,11 +95,11 @@ public class TextAdventureTests
     public void World_PreventsTakingNonexistentItem()
     {
         // Arrange
-        var world = new World();
         var player = new Player(100);
+        var location = new Location("Start", "You are at the starting point of your adventure.");
 
         // Act
-        bool taken = world.TakeItem(player, "nonexistent");
+        bool taken = player.TakeItem("nonexistent", location);
 
         // Assert
         Assert.False(taken);

@@ -4,7 +4,7 @@ public class GameManager
 {
     private bool IsRunning;
     private Player Player;
-    private World World;
+    public World World;
 
     public void RunGame()
     {
@@ -51,7 +51,7 @@ public class GameManager
                 if (parts.Length > 1)
                 {
                     string itemName = parts[1];
-                    if (!World.TakeItem(Player, itemName))
+                    if (!Player.TakeItem(itemName, World.Locations[Player.CurrentLocation]))
                     {
                         Console.WriteLine($"There is no {itemName} here.");
                     }
@@ -67,7 +67,7 @@ public class GameManager
                 if (parts.Length > 1)
                 {
                     string itemName = parts[1];
-                    if (!World.UseItem(Player, itemName))
+                    if (!Player.UseItem(itemName))
                     {
                         Console.WriteLine($"You can't use the {itemName} here.");
                     }

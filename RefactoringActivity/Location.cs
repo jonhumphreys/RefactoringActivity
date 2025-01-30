@@ -36,4 +36,19 @@ public class Location
     {
         return _puzzles;
     }
+
+    public void AddExit(string direction, string targetLocation)
+    {
+        _exits.Add(direction, targetLocation);
+    }
+
+    public void AddItem(string item)
+    {
+        _items.Add(item);
+    }
+
+    public void AddPuzzle(string name, string question, string answer)
+    {
+        _puzzles.Add(new Puzzle(name, question, answer));
+    }
 }

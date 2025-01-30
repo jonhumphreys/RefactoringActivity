@@ -28,4 +28,42 @@ public class Player
             }
         }
     }
+    
+    public bool UseItem(string itemName)
+    {
+        if (Inventory.Contains(itemName))
+        {
+            if (itemName == "potion")
+            {
+                UsePotion();
+            }
+            else
+            {
+                Console.WriteLine($"The {itemName} disappears in a puff of smoke!");
+            }
+            Inventory.Remove(itemName);
+            return true;
+        }
+
+        return false;
+    }
+    
+    public bool TakeItem(string itemName, Location location)
+    {
+        if (location.GetItems().Contains(itemName))
+        {
+            location.GetItems().Remove(itemName);
+            Inventory.Add(itemName);
+            Console.WriteLine($"You take the {itemName}.");
+            return true;
+        }
+        return false;
+    }
+
+    private void UsePotion()
+    {
+        Console.WriteLine("Ouch! That tasted like poison!");
+        Health -= 10;
+        Console.WriteLine($"Your health is now {Health}.");
+    }
 }
