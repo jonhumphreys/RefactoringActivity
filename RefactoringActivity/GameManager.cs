@@ -4,9 +4,9 @@ public class GameManager
 {
     private bool IsRunning;
     private Player Player;
-    private World World;
-    
     //would add an enum for the options but I'm too tired
+    public World World;
+
     public void RunGame()
     {
         InitializeGame();
@@ -16,7 +16,7 @@ public class GameManager
         while (IsRunning)
         {
             Console.WriteLine();
-            Console.WriteLine(World.GetLocationDetails(Player.CurrentLocation));
+            Console.WriteLine(World.GetLocationDetails(Player.GetCurrentLocation()));
             Console.Write("> ");
             string input = Console.ReadLine()?.ToLower();
             if (string.IsNullOrEmpty(input)) 
